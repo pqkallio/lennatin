@@ -3,6 +3,7 @@
 
 #include <string>
 #include "kehapuskuri.h"
+#include "merkit.h"
 
 typedef struct _morse
 {
@@ -24,7 +25,7 @@ static const Morse kolme = {.merkki = '3', .piste = nullptr, .viiva = nullptr};
 static const Morse kysymJohde = {.merkki = '\0', .piste = &kysym, .viiva = nullptr};
 static const Morse kaksi = {.merkki = '2', .piste = nullptr, .viiva = nullptr};
 static const Morse pisteJohde = {.merkki = '\0', .piste = nullptr, .viiva = &piste};
-static const Morse AO = {.merkki = 'Å', .piste = nullptr, .viiva = nullptr};
+static const Morse AO = {.merkki = merkit::AO, .piste = nullptr, .viiva = nullptr};
 static const Morse yksi = {.merkki = '1', .piste = nullptr, .viiva = nullptr};
 
 // Neljäs taso
@@ -33,7 +34,7 @@ static const Morse V = {.merkki = 'V', .piste = nullptr, .viiva = &kolme};
 static const Morse F = {.merkki = 'F', .piste = nullptr, .viiva = nullptr};
 static const Morse kaksiJohde = {.merkki = '\0', .piste = &kysymJohde, .viiva = &kaksi};
 static const Morse L = {.merkki = 'L', .piste = nullptr, .viiva = nullptr};
-static const Morse AE = {.merkki = 'Ä', .piste = &pisteJohde, .viiva = nullptr};
+static const Morse AE = {.merkki = merkit::AE, .piste = &pisteJohde, .viiva = nullptr};
 static const Morse P = {.merkki = 'P', .piste = nullptr, .viiva = &AO};
 static const Morse J = {.merkki = 'J', .piste = nullptr, .viiva = &yksi};
 
@@ -76,7 +77,7 @@ static const Morse C = {.merkki = 'C', .piste = nullptr, .viiva = nullptr};
 static const Morse Y = {.merkki = 'Y', .piste = &vasenSulku, .viiva = nullptr};
 static const Morse Z = {.merkki = 'Z', .piste = &seiska, .viiva = &pilkkuJohde};
 static const Morse Q = {.merkki = 'Q', .piste = nullptr, .viiva = nullptr};
-static const Morse OE = {.merkki = 'Ö', .piste = &kasi, .viiva = nullptr};
+static const Morse OE = {.merkki = merkit::OE, .piste = &kasi, .viiva = nullptr};
 static const Morse ysiJohde = {.merkki = '\0', .piste = &ysi, .viiva = &nolla};
 
 // Kolmas taso

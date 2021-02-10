@@ -3,7 +3,7 @@
 
 TEST(KehaPuskuriTesti, PuskuriinLisaaminen)
 {
-    KehaPuskuri<char> puskuri{};
+    KehaPuskuri<char> puskuri;
 
     char x = 0;
 
@@ -22,7 +22,7 @@ TEST(KehaPuskuriTesti, PuskuriinLisaaminen)
 
 TEST(KehaPuskuriTesti, PuskuristaOttaminen)
 {
-    KehaPuskuri<char> puskuri{};
+    KehaPuskuri<char> puskuri;
 
     char x = 0;
 
@@ -43,4 +43,19 @@ TEST(KehaPuskuriTesti, PuskuristaOttaminen)
 
     EXPECT_FALSE(puskuri.luettavissa());
     EXPECT_EQ(puskuri.ota(), x);
+}
+
+TEST(KehaPuskuriTesti, OtonPeruminen)
+{
+    KehaPuskuri<char> puskuri;
+
+    char x = 0;
+
+    for (int i = 0; i < 256; i++)
+    {
+        EXPECT_TRUE(puskuri.peruOtto());
+    }
+
+    EXPECT_FALSE(puskuri.peruOtto());
+    EXPECT_FALSE(puskuri.laita(x));
 }
