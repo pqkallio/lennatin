@@ -1,18 +1,16 @@
 #ifndef KEHAPUSKURI_H_
 #define KEHAPUSKURI_H_
 
-#include <cstdint>
-
-static const std::size_t PUSKURIN_KOKO = 256;
+static const uint8_t PUSKURIN_KOKO = 256;
 
 template <typename T>
 class KehaPuskuri
 {
 private:
-    std::uint8_t mIndeksi;
-    std::uint8_t mLoppu;
+    uint8_t mIndeksi;
+    uint8_t mLoppu;
     T mPuskuri[PUSKURIN_KOKO];
-    std::uint8_t mKierrokset;
+    uint8_t mKierrokset;
 
 public:
     KehaPuskuri();
@@ -28,7 +26,7 @@ KehaPuskuri<T>::KehaPuskuri() : mIndeksi(0), mLoppu(0), mKierrokset(0) {}
 template <typename T>
 bool KehaPuskuri<T>::luettavissa()
 {
-    return mIndeksi != mLoppu || (mKierrokset >> 1) ^ (mKierrokset & static_cast<std::uint8_t>(0x1));
+    return mIndeksi != mLoppu || (mKierrokset >> 1) ^ (mKierrokset & static_cast<uint8_t>(0x1));
 }
 
 template <typename T>
@@ -36,14 +34,14 @@ T KehaPuskuri<T>::ota()
 {
     T alkio = mPuskuri[mIndeksi];
 
-    std::uint8_t seuraava = mIndeksi + 1;
+    uint8_t seuraava = mIndeksi + 1;
 
     if (mIndeksi > seuraava)
     {
-        mKierrokset ^= static_cast<std::uint8_t>(0x1 << 1);
+        mKierrokset ^= static_cast<uint8_t>(0x1 << 1);
     }
 
-    mIndeksi = mIndeksi != mLoppu || (mKierrokset >> 1) ^ (mKierrokset & static_cast<std::uint8_t>(0x1)) ? seuraava : mIndeksi;
+    mIndeksi = mIndeksi != mLoppu || (mKierrokset >> 1) ^ (mKierrokset & static_cast<uint8_t>(0x1)) ? seuraava : mIndeksi;
 
     return alkio;
 }
@@ -51,7 +49,7 @@ T KehaPuskuri<T>::ota()
 template <typename T>
 bool KehaPuskuri<T>::peruOtto()
 {
-    if (mIndeksi == mLoppu && (mKierrokset >> 1) ^ (mKierrokset & static_cast<std::uint8_t>(0x1)))
+    if (mIndeksi == mLoppu && (mKierrokset >> 1) ^ (mKierrokset & static_cast<uint8_t>(0x1)))
     {
         return false;
     }
@@ -60,7 +58,7 @@ bool KehaPuskuri<T>::peruOtto()
 
     if (seuraava > mIndeksi)
     {
-        mKierrokset ^= static_cast<std::uint8_t>(0x1 << 1);
+        mKierrokset ^= static_cast<uint8_t>(0x1 << 1);
     }
 
     mIndeksi = seuraava;
@@ -71,16 +69,16 @@ bool KehaPuskuri<T>::peruOtto()
 template <typename T>
 bool KehaPuskuri<T>::laita(T alkio)
 {
-    if (mIndeksi == mLoppu && (mKierrokset >> 1) ^ (mKierrokset & static_cast<std::uint8_t>(0x1)))
+    if (mIndeksi == mLoppu && (mKierrokset >> 1) ^ (mKierrokset & static_cast<uint8_t>(0x1)))
     {
         return false;
     }
 
-    std::uint8_t seuraava = mLoppu + 1;
+    uint8_t seuraava = mLoppu + 1;
 
     if (mLoppu > seuraava)
     {
-        mKierrokset ^= static_cast<std::uint8_t>(0x1);
+        mKierrokset ^= static_cast<uint8_t>(0x1);
     }
 
     mPuskuri[mLoppu] = alkio;

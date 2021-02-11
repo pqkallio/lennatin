@@ -1,7 +1,6 @@
 #ifndef MORSE_H_
 #define MORSE_H_
 
-#include <string>
 #include "kehapuskuri.h"
 #include "merkit.h"
 
