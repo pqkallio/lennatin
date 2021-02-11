@@ -19,7 +19,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Get arduino-cli
-        run: curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/usr/local/bin sh
+        run: curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=/usr/local/bin sh
 
       # Runs a set of commands using the runners shell
       - name: Install Arduino Uno core
