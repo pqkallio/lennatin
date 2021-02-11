@@ -21,5 +21,6 @@ jobs:
       - name: Compile with arduino-cli
         run: |
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sudo BINDIR=/usr/local/bin sh
-          arduino-cli core install arduino:avr
-          arduino-cli compile --fqbn arduino:avr:uno -v
+          sudo arduino-cli core update-index
+          sudo arduino-cli core install arduino:avr
+          sudo arduino-cli compile --fqbn arduino:avr:uno -v
