@@ -2,7 +2,7 @@
 
 name: Arduino build
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -19,12 +19,13 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Get arduino-cli
-        run: curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=/usr/local/bin sudo sh
+        run: curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh
 
       # Runs a set of commands using the runners shell
       - name: Install Arduino Uno core
-        run: arduino-cli core update-index |
-             arduino-cli core install arduino:avr
-             
+        run:
+          ./home/runner/work/lennatin/lennatin/bin/arduino-cli core update-index |
+          ./home/runner/work/lennatin/lennatin/bin/arduino-cli core install arduino:avr
+
       - name: Compile
-        run: arduino-cli compile --fqbn arduino:avr:uno -v
+        run: ./home/runner/work/lennatin/lennatin/bin/arduino-cli compile --fqbn arduino:avr:uno -v
