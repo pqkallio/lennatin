@@ -19,7 +19,8 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Compile with arduino-cli
-        run: curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
-        run: ./home/runner/work/lennatin/lennatin/bin/arduino-cli core update-index
-        run: ./home/runner/work/lennatin/lennatin/bin/arduino-cli core install arduino:avr
-        run: ./home/runner/work/lennatin/lennatin/bin/arduino-cli compile --fqbn arduino:avr:uno -v
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sudo BINDIR=/usr/local/bin sh
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+          arduino-cli compile --fqbn arduino:avr:uno -v
