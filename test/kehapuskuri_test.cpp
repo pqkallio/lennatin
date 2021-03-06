@@ -3,59 +3,40 @@
 
 TEST(KehaPuskuriTesti, PuskuriinLisaaminen)
 {
-    KehaPuskuri<char> puskuri;
-
     char x = 0;
 
     do
     {
-        EXPECT_TRUE(puskuri.laita(x++));
+        EXPECT_TRUE(insertToBuffer(x++));
     } while (x != 0);
 
-    EXPECT_FALSE(puskuri.laita(x));
+    EXPECT_FALSE(insertToBuffer(x));
 
-    puskuri.ota();
+    takeFromBuffer();
 
-    EXPECT_TRUE(puskuri.laita(x));
-    EXPECT_FALSE(puskuri.laita(x));
+    EXPECT_TRUE(insertToBuffer(x));
+    EXPECT_FALSE(insertToBuffer(x));
 }
 
 TEST(KehaPuskuriTesti, PuskuristaOttaminen)
 {
-    KehaPuskuri<char> puskuri;
-
     char x = 0;
 
-    EXPECT_FALSE(puskuri.luettavissa());
-    puskuri.ota();
-    EXPECT_FALSE(puskuri.luettavissa());
+    EXPECT_FALSE(bufferIsReadable());
+    takeFromBuffer();
+    EXPECT_FALSE(bufferIsReadable());
 
     do
     {
-        puskuri.laita(x++);
+        insertToBuffer(x++);
     } while (x != 0);
 
     for (int i = 0; i < 256; i++, x++)
     {
-        EXPECT_TRUE(puskuri.luettavissa());
-        EXPECT_EQ(puskuri.ota(), x);
+        EXPECT_TRUE(bufferIsReadable());
+        EXPECT_EQ(takeFromBuffer(), x);
     }
 
-    EXPECT_FALSE(puskuri.luettavissa());
-    EXPECT_EQ(puskuri.ota(), x);
-}
-
-TEST(KehaPuskuriTesti, OtonPeruminen)
-{
-    KehaPuskuri<char> puskuri;
-
-    char x = 0;
-
-    for (int i = 0; i < 256; i++)
-    {
-        EXPECT_TRUE(puskuri.peruOtto());
-    }
-
-    EXPECT_FALSE(puskuri.peruOtto());
-    EXPECT_FALSE(puskuri.laita(x));
+    EXPECT_FALSE(bufferIsReadable());
+    EXPECT_EQ(takeFromBuffer(), x);
 }
