@@ -36,9 +36,13 @@ test/%.o: test/%.c $(DEPS)
 $(TESTER): $(test_obj) $(DEPS)
 	$(CC) -o $@ $^ $(CFLAGS) $(TESTFLAGS)
 
-.PHONY: coverage
+.PHONY: coverage clean
 
 coverage: $(TESTER)
+	mkdir -p $(COVDIR)
 	./$(TESTER)
 	$(COV) $(COVFLAGS)
 	$(HTMLGEN) $(HTMLGENFLAGS)
+
+clean:
+	rm -f $(obj) $(test_files_obj) $(TESTER) $(coverage_files)

@@ -10,6 +10,6 @@ typedef struct _morse
     const struct _morse *viiva;
 } Morse;
 
-unsigned char haeKirjain(struct _kehapuskuri *puskuri);
+unsigned char get_char(struct _kehapuskuri *puskuri);
 
 #endif /* _MORSE_H */
