@@ -2,3 +2,8 @@
 testbuild/
 build/
 sketch.json
+**/*.o
+**/*.hex
+**/*.gcno
+**/*.gcda
+lennatin
