@@ -5,11 +5,11 @@
 
 typedef struct _morse
 {
-    unsigned char merkki;
-    const struct _morse *piste;
-    const struct _morse *viiva;
+    unsigned char ch;
+    const struct _morse *dot;
+    const struct _morse *dash;
 } Morse;
 
-unsigned char get_char(struct _kehapuskuri *puskuri);
+unsigned char get_char(struct _ringbuffer *buf);
 
 #endif /* _MORSE_H */

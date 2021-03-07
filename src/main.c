@@ -8,9 +8,6 @@
 volatile unsigned short MS_COUNTER;
 volatile unsigned short MORSE_LEN;
 
-static const char puskuri[255] = {};
-static struct _kehapuskuri KEHAPUSKURI = {.mIndeksi = 0, .mLoppu = 0, .mKierrokset = 0, .mPuskuri = puskuri};
-
 // handle MORSE_IN interrupts
 ISR(INT0_vect)
 {

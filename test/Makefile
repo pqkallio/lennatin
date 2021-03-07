@@ -24,7 +24,7 @@ html_cov_path = $(COVDIR)/html
 
 CFLAGS = -Wall -Wsign-compare -Wextra -Wpedantic -g -I$(IDIR) --coverage
 TESTFLAGS = -lcunit -I.
-COVFLAGS = --capture --directory . --output-file $(COVDIR)/$(cov_info)
+COVFLAGS = --capture --directory $(IDIR) --output-file $(COVDIR)/$(cov_info)
 HTMLGENFLAGS = $(COVDIR)/$(cov_info) --output-directory $(html_cov_path)
 
 src/%.o: src/%.c $(DEPS)

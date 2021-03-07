@@ -15,7 +15,7 @@ src = $(wildcard src/*.c) $(wildcard src/**/*.c)
 
 obj = $(src:.c=.o)
 
-CFLAGS = -Wall -Wsign-compare -Wextra -Wpedantic -g -I$(IDIR) --coverage
+CFLAGS = -Wall -Wsign-compare -Wextra -Wpedantic -g -I$(IDIR)
 AVROBJFLAGS = -Os -DF_CPU=16000000UL
 AVREXECFLAGS = -mmcu=atmega328p
 OBJCOPYFLAGS = -O ihex -R .eeprom

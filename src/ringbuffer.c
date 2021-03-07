@@ -1,57 +1,57 @@
 #include "ringbuffer.h"
 
-bool bufferIsReadable(struct _kehapuskuri *kehapuskuri)
+bool buffer_is_readable(struct _ringbuffer *ringbuffer)
 {
-    uint8_t indeksi = kehapuskuri->mIndeksi;
-    uint8_t loppu = kehapuskuri->mLoppu;
-    uint8_t kierrokset = kehapuskuri->mKierrokset;
+    uint8_t idx = ringbuffer->idx;
+    uint8_t end = ringbuffer->end;
+    uint8_t rounds = ringbuffer->rounds;
 
-    return indeksi != loppu || (kierrokset >> 1) ^ (kierrokset & (uint8_t)0x1);
+    return idx != end || (rounds >> 1) ^ (rounds & (uint8_t)0x1);
 }
 
-char takeFromBuffer(struct _kehapuskuri *kehapuskuri)
+char take_from_buffer(struct _ringbuffer *ringbuffer)
 {
-    char *puskuri = kehapuskuri->mPuskuri;
-    uint8_t indeksi = kehapuskuri->mIndeksi;
-    uint8_t kierrokset = kehapuskuri->mKierrokset;
-    uint8_t loppu = kehapuskuri->mLoppu;
+    char *buf = ringbuffer->buffer;
+    uint8_t idx = ringbuffer->idx;
+    uint8_t rounds = ringbuffer->rounds;
+    uint8_t end = ringbuffer->end;
 
-    char alkio = puskuri[indeksi];
+    char item = buf[idx];
 
-    uint8_t seuraava = indeksi + 1;
+    uint8_t next = idx + 1;
 
-    if (indeksi > seuraava)
+    if (idx > next)
     {
-        kehapuskuri->mKierrokset ^= (uint8_t)(0x1 << 1);
+        ringbuffer->rounds ^= (uint8_t)(0x1 << 1);
     }
 
-    kehapuskuri->mIndeksi = indeksi != loppu || (kierrokset >> 1) ^ (kierrokset & (uint8_t)0x1) ? seuraava : indeksi;
+    ringbuffer->idx = idx != end || (rounds >> 1) ^ (rounds & (uint8_t)0x1) ? next : idx;
 
-    return alkio;
+    return item;
 }
 
-bool insertToBuffer(struct _kehapuskuri *kehapuskuri, char alkio)
+bool insert_into_buffer(struct _ringbuffer *ringbuffer, char item)
 {
-    char *puskuri = kehapuskuri->mPuskuri;
-    uint8_t indeksi = kehapuskuri->mIndeksi;
-    uint8_t kierrokset = kehapuskuri->mKierrokset;
-    uint8_t loppu = kehapuskuri->mLoppu;
+    char *buf = ringbuffer->buffer;
+    uint8_t idx = ringbuffer->idx;
+    uint8_t rounds = ringbuffer->rounds;
+    uint8_t end = ringbuffer->end;
 
-    if (indeksi == loppu && (kierrokset >> 1) ^ (kierrokset & (uint8_t)0x1))
+    if (idx == end && (rounds >> 1) ^ (rounds & (uint8_t)0x1))
     {
         return false;
     }
 
-    uint8_t seuraava = loppu + 1;
+    uint8_t next = end + 1;
 
-    if (loppu > seuraava)
+    if (end > next)
     {
-        kehapuskuri->mKierrokset ^= (uint8_t)0x1;
+        ringbuffer->rounds ^= (uint8_t)0x1;
     }
 
-    puskuri[loppu] = alkio;
+    buf[end] = item;
 
-    kehapuskuri->mLoppu = seuraava;
+    ringbuffer->end = next;
 
     return true;
 }

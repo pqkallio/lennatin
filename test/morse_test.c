@@ -4,19 +4,19 @@
 #include "ringbuffer.h"
 
 static char ARR[255] = {0};
-struct _kehapuskuri BUF = {.mIndeksi = 0, .mLoppu = 0, .mKierrokset = 0, .mPuskuri = ARR};
+struct _ringbuffer BUF = {.idx = 0, .end = 0, .rounds = 0, .buffer = ARR};
 
-void insert_into_buffer(const char *str)
+void set_buffer_content(const char *str)
 {
     while (*str)
     {
-        insertToBuffer(&BUF, *str++);
+        insert_into_buffer(&BUF, *str++);
     }
 }
 
 void test_ABCDEFG()
 {
-    insert_into_buffer(".- -... -.-. -.. . ..-. --.");
+    set_buffer_content(".- -... -.-. -.. . ..-. --.");
 
     for (char c = 'A'; c <= 'G'; c++)
     {
@@ -26,7 +26,7 @@ void test_ABCDEFG()
 
 void test_HIJKLMN()
 {
-    insert_into_buffer(".... .. .--- -.- .-.. -- -.");
+    set_buffer_content(".... .. .--- -.- .-.. -- -.");
 
     for (char c = 'H'; c <= 'N'; c++)
     {
@@ -36,7 +36,7 @@ void test_HIJKLMN()
 
 void test_OPQRSTU()
 {
-    insert_into_buffer("--- .--. --.- .-. ... - ..-");
+    set_buffer_content("--- .--. --.- .-. ... - ..-");
 
     for (char c = 'O'; c <= 'U'; c++)
     {
@@ -46,7 +46,7 @@ void test_OPQRSTU()
 
 void test_VWXYZ()
 {
-    insert_into_buffer("...- .-- -..- -.-- --..");
+    set_buffer_content("...- .-- -..- -.-- --..");
 
     for (char c = 'V'; c <= 'Z'; c++)
     {
@@ -56,7 +56,7 @@ void test_VWXYZ()
 
 void test_scandics()
 {
-    insert_into_buffer(".--.- .-.- ---.");
+    set_buffer_content(".--.- .-.- ---.");
 
     CU_ASSERT_EQUAL(get_char(&BUF), (unsigned char)0xc5);
     CU_ASSERT_EQUAL(get_char(&BUF), (unsigned char)0xc4);
@@ -65,7 +65,7 @@ void test_scandics()
 
 void test_numbers()
 {
-    insert_into_buffer("----- .---- ..--- ...-- ....- ..... -.... --... ---.. ----.");
+    set_buffer_content("----- .---- ..--- ...-- ....- ..... -.... --... ---.. ----.");
 
     for (char c = '0'; c <= '9'; c++)
     {
@@ -75,7 +75,7 @@ void test_numbers()
 
 void test_special_characters()
 {
-    insert_into_buffer("..--.. -..-. -...- ---... .-.-.- --..-- -....- -.--. -.--.-");
+    set_buffer_content("..--.. -..-. -...- ---... .-.-.- --..-- -....- -.--. -.--.-");
 
     CU_ASSERT_EQUAL(get_char(&BUF), (unsigned char)'?');
     CU_ASSERT_EQUAL(get_char(&BUF), (unsigned char)'/');
