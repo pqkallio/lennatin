@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "lcd.h"
 #include "ringbuffer.h"
 
 #define MORSE_IN 2
@@ -54,6 +55,12 @@ void init_io()
 {
     DDRD &= ~_BV(DDD2); // MORSE_IN is input
     DDRB |= _BV(DDB0);  // LED_OUT is output
+
+    // LCD
+    // set RS, R/W and E lines to output
+    DDRB |= _BV(DDB1) | _BV(DDB2) | _BV(DDB3);
+    // set address lines DB4-DB7 to output
+    DDRD |= _BV(DDD4) | _BV(DDD5) | _BV(DDD6) | _BV(DDD7);
 }
 
 void init_globals()
