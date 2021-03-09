@@ -75,6 +75,7 @@ void main()
     init_interrupts();
     init_io();
     init_globals();
+    lcd_init();
 
     for (;;)
     {
