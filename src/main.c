@@ -2,7 +2,6 @@
 #include "ringbuffer.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <util/delay.h>
 
 #define MORSE_IN 2
 #define LED_OUT 0
