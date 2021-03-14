@@ -17,6 +17,8 @@
 #define LCD_DB7 7
 
 void lcd_init();
+void lcd_clear();
 void lcd_write_char(unsigned char c);
+void lcd_write_string(char *str);
 
 #endif /* _LCD_H */

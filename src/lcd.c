@@ -1,7 +1,8 @@
+#include "lcd.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdbool.h>
-#include "lcd.h"
+#include <string.h>
 
 static inline void set_address_lines_to_input_mode()
 {
@@ -40,17 +41,27 @@ static inline void execute_command()
     _delay_us(100);
 }
 
-static bool is_busy()
+static void wait_for_turn()
 {
-    enable_com();
-    _delay_us(1);
+    set_address_lines_to_input_mode();
 
-    bool busy = (PIND & _BV(LCD_DB7)) == _BV(LCD_DB7);
+    PORTB = (PORTB & ~_BV(LCD_RS)) | _BV(LCD_RW);
 
-    disable_com();
-    _delay_us(100);
+    for (;;)
+    {
+        execute_command();
 
-    return busy;
+        enable_com();
+        _delay_us(1);
+
+        bool busy = (PIND & _BV(LCD_DB7)) == _BV(LCD_DB7);
+
+        disable_com();
+        _delay_us(100);
+
+        if (!busy)
+            break;
+    }
 }
 
 /**
@@ -58,14 +69,7 @@ static bool is_busy()
  */
 static void perform_task(void (*run_task)())
 {
-    set_address_lines_to_input_mode();
-
-    PORTB = (PORTB & ~_BV(LCD_RS)) | _BV(LCD_RW);
-
-    do
-    {
-        execute_command();
-    } while (is_busy()); // Wait for the busy flag to be zero
+    wait_for_turn();
 
     run_task();
 }
@@ -120,11 +124,11 @@ static void display_on()
     set_zero_address();
     execute_command();
 
-    PORTD |= _BV(LCD_DB3) | _BV(LCD_DB2) | _BV(LCD_DB1);
+    PORTD |= _BV(LCD_DB3) | _BV(LCD_DB2) | _BV(LCD_DB0);
     execute_command();
 }
 
-static void display_clear()
+void lcd_clear()
 {
     set_address_lines_to_output_mode();
 
@@ -135,8 +139,6 @@ static void display_clear()
 
     PORTD |= _BV(LCD_DB0);
     execute_command();
-
-    _delay_us(2000);
 }
 
 static void set_entry_mode()
@@ -148,7 +150,7 @@ static void set_entry_mode()
     set_zero_address();
     execute_command();
 
-    PORTD |= _BV(LCD_DB2) | _BV(LCD_DB1) | _BV(LCD_DB0);
+    PORTD |= _BV(LCD_DB2) | _BV(LCD_DB1);
     execute_command();
 }
 
@@ -156,7 +158,6 @@ void lcd_init()
 {
     // Set control pins as output pins
     DDRB |= _BV(LCD_RS) | _BV(LCD_RW) | _BV(LCD_E);
-    disable_com();
 
     _delay_ms(50);
 
@@ -165,10 +166,35 @@ void lcd_init()
     perform_task(set_4bit_interface);
     perform_task(set_font_and_display_line_count);
     perform_task(display_on);
-    perform_task(display_clear);
+    perform_task(lcd_clear);
     perform_task(set_entry_mode);
 }
 
 void lcd_write_char(unsigned char c)
 {
+    wait_for_turn();
+
+    set_address_lines_to_output_mode();
+
+    PORTB = (PORTB & ~_BV(LCD_RW)) | _BV(LCD_RS);
+
+    set_zero_address();
+    PORTD |= (0xf0 & c);
+
+    execute_command();
+
+    set_zero_address();
+    PORTD |= (c << 4);
+
+    execute_command();
+}
+
+void lcd_write_string(char *str)
+{
+    size_t len = strlen(str);
+
+    for (size_t i = 0; i < len; i++)
+    {
+        lcd_write_char((unsigned char)str[i]);
+    }
 }

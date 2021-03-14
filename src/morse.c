@@ -1,5 +1,5 @@
-#include <stddef.h>
 #include "morse.h"
+#include <stddef.h>
 
 // FINNISH MORSE CODES AS A TREE STRUCTURE
 // ---------------------------------------
