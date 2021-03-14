@@ -9,10 +9,11 @@ _DEPS = ringbuffer.h \
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 TESTER = tester
 
-src = $(wildcard $(IDIR)/*.c) $(wildcard $(IDIR)/**/*.c)
+src = $(IDIR)/morse.c \
+		$(IDIR)/ringbuffer.c
 
 test_files = $(wildcard *.c)
-test = $(test_files) $(filter-out $(IDIR)/main.c, $(src))
+test = $(test_files) $(src)
 
 obj = $(src:.c=.o)
 test_files_obj = $(test_files:.c=.o)

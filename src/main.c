@@ -1,6 +1,7 @@
+#include "lcd.h"
+#include "ringbuffer.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "ringbuffer.h"
 
 #define MORSE_IN 2
 #define LED_OUT 0
@@ -62,14 +63,13 @@ void init_globals()
     MORSE_LEN = 0;
 }
 
-void main()
+int main()
 {
     init_clocks();
     init_interrupts();
     init_io();
     init_globals();
+    lcd_init();
 
-    for (;;)
-    {
-    }
+    return 0;
 }
