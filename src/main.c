@@ -2,12 +2,26 @@
 #include "ringbuffer.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <math.h>
 
+#define PI 3.14159265
 #define MORSE_IN 2
 #define LED_OUT 0
 
 volatile unsigned short MS_COUNTER;
 volatile unsigned short MORSE_LEN;
+
+unsigned int HZ = 700;
+unsigned int PWM_SEC_PRESCALED = 15625;
+
+uint8_t get_PWM_duty_cycle(unsigned int time)
+{
+    unsigned int cycle_len = HZ / PWM_SEC_PRESCALED;
+
+    float duty_cycle_factor = (time % cycle_len * 2 * PI + 1) / 2;
+
+    return (uint8_t)floorf(duty_cycle_factor * UINT8_MAX);
+}
 
 // handle MORSE_IN interrupts
 ISR(INT0_vect)
@@ -70,6 +84,10 @@ int main()
     init_io();
     init_globals();
     lcd_init();
+
+    for (;;)
+    {
+    }
 
     return 0;
 }
